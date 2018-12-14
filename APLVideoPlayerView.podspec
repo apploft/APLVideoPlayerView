@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "APLVideoPlayerView"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "APLVideoPlayerView is a simple way to integrate a video player."
 
   s.description  = <<-DESC
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
 
   s.author       = { "Christine Pühringer" => "christine.puehringer@apploft.de" }
 
-  s.platform     = :ios, "11.0"
+  s.platform     = :ios, "10.0"
   
   s.source       = { :git => "https://github.com/apploft/APLVideoPlayerView.git", :tag => s.version.to_s }
 
