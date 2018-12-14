@@ -1,4 +1,4 @@
-#APLVideoPlayerView
+# APLVideoPlayerView
 
 APLVideoPlayerView is a simple way to integrate a video player.
 
