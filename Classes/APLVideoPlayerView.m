@@ -8,8 +8,6 @@
 
 #import "APLVideoPlayerView.h"
 
-#import <AVKit/AVKit.h>
-
 @interface APLVideoPlayerView()
 @property (nonatomic, strong) AVPlayer *avPlayer;
 @property (nonatomic, weak) AVPlayerLayer *avPlayerLayer;
@@ -38,8 +36,10 @@
 }
 
 -(void)commonInit {
+    self.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    
     AVPlayerLayer *avPlayerLayer = [[AVPlayerLayer alloc] init];
-    avPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    avPlayerLayer.videoGravity = self.videoGravity;
     
     avPlayerLayer.frame = self.bounds;
     [[self layer] addSublayer:avPlayerLayer];
@@ -74,6 +74,12 @@
     self.avPlayer = queuePlayer;
     
     self.avPlayerLayer.player = self.avPlayer;
+}
+
+-(void)setVideoGravity:(AVLayerVideoGravity)videoGravity {
+    _videoGravity = videoGravity;
+    // set video gravity in avPlayerLayer if already existing
+    self.avPlayerLayer.videoGravity = videoGravity;
 }
 
 -(void)play {

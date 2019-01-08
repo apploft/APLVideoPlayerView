@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AVKit/AVKit.h>
 
 @interface APLVideoPlayerView : UIView
 @property (nonatomic, copy) NSString *videoFilename;
+/// A value that defines how the video is displayed within a layer’s bounds rectangle. Default mode is AVLayerVideoGravityResizeAspectFill.
+@property (nonatomic) AVLayerVideoGravity videoGravity;
 
 -(instancetype)initWithFrame:(CGRect)frame videoFilename:(NSString*)videoFilename;
 
