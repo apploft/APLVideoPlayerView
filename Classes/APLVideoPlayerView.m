@@ -9,7 +9,6 @@
 #import "APLVideoPlayerView.h"
 
 @interface APLVideoPlayerView()
-@property (nonatomic, strong) AVPlayer *avPlayer;
 @property (nonatomic, weak) AVPlayerLayer *avPlayerLayer;
 @property (nonatomic, strong) AVPlayerLooper *avPlayerLooper;
 @end
