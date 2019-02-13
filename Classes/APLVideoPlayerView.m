@@ -9,6 +9,7 @@
 #import "APLVideoPlayerView.h"
 
 @interface APLVideoPlayerView()
+@property (nonatomic, copy) NSString *videoFilename;
 @property (nonatomic, weak) AVPlayerLayer *avPlayerLayer;
 @property (nonatomic, strong) AVPlayerLooper *avPlayerLooper;
 @end
@@ -52,7 +53,7 @@
     self.avPlayerLayer.frame = self.bounds;
 }
 
--(void)setVideoFilename:(NSString *)videoFilename {
+-(void)setVideoFilename:(NSString *)videoFilename loop:(Boolean) loop {
     if ([_videoFilename isEqualToString:videoFilename]) {
         return;
     }
@@ -64,9 +65,10 @@
     AVAsset *videoAsset = [AVAsset assetWithURL:videoFileURL];
     AVPlayerItem *avPlayerItem = [AVPlayerItem playerItemWithAsset:videoAsset];
     AVQueuePlayer *queuePlayer = [[AVQueuePlayer alloc] initWithItems:@[avPlayerItem]];
-    AVPlayerLooper *playerLooper = [AVPlayerLooper playerLooperWithPlayer:queuePlayer templateItem:avPlayerItem];
-    
-    self.avPlayerLooper = playerLooper;
+    if (loop) {
+        AVPlayerLooper *playerLooper = [AVPlayerLooper playerLooperWithPlayer:queuePlayer templateItem:avPlayerItem];
+        self.avPlayerLooper = playerLooper;
+    }
     
     NSAssert(videoFileURL != nil, @"Onboarding video missing in bundle");
     
