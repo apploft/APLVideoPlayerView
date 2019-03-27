@@ -16,7 +16,7 @@
 
 @implementation APLVideoPlayerView
 
-- (instancetype)initWithFrame:(NSRect)frame
+- (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
