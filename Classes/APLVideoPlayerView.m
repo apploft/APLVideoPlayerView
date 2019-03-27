@@ -16,12 +16,20 @@
 
 @implementation APLVideoPlayerView
 
--(instancetype)initWithFrame:(CGRect)frame videoFilename:(NSString*)videoFilename {
+- (instancetype)initWithFrame:(NSRect)frame
+{
     self = [super initWithFrame:frame];
-    
-    if (self != nil) {
+    if (self) {
         [self commonInit];
-        self.videoFilename = videoFilename;
+    }
+    return self;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self commonInit];
     }
     return self;
 }
