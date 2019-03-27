@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "APLVideoPlayerView"
-  s.version      = "0.0.4"
+  s.version      = "0.0.5"
   s.summary      = "APLVideoPlayerView is a simple way to integrate a video player."
 
   s.description  = <<-DESC
