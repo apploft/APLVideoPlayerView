@@ -14,6 +14,7 @@
 /// A value that defines how the video is displayed within a layer’s bounds rectangle. Default mode is AVLayerVideoGravityResizeAspectFill.
 @property (nonatomic) AVLayerVideoGravity videoGravity;
 
+-(void)setVideoFilename:(NSString *)videoFilename withExtension:(NSString *) withExtension loop:(Boolean) loop;
 -(void)setVideoFilename:(NSString *)videoFilename loop:(Boolean) loop;
 
 -(void)play;

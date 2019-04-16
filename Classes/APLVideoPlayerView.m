@@ -62,13 +62,23 @@
 }
 
 -(void)setVideoFilename:(NSString *)videoFilename loop:(Boolean) loop {
+    [self setVideoFilename:videoFilename withExtension:nil loop:loop];
+}
+
+-(void)setVideoFilename:(NSString *)videoFilename withExtension:(NSString *) withExtension loop:(Boolean) loop {
     if ([_videoFilename isEqualToString:videoFilename]) {
         return;
     }
     
+    if (withExtension == nil) {
+        withExtension = @"mp4";
+    }
+    
     _videoFilename = videoFilename;
     
-    NSURL *videoFileURL = [[NSBundle mainBundle] URLForResource:videoFilename withExtension:@"mp4"];
+    NSURL *videoFileURL = [[NSBundle mainBundle] URLForResource:videoFilename withExtension:withExtension];
+    
+    NSAssert(videoFileURL != nil, @"Onboarding video missing in bundle");
     
     AVAsset *videoAsset = [AVAsset assetWithURL:videoFileURL];
     AVPlayerItem *avPlayerItem = [AVPlayerItem playerItemWithAsset:videoAsset];
@@ -77,8 +87,6 @@
         AVPlayerLooper *playerLooper = [AVPlayerLooper playerLooperWithPlayer:queuePlayer templateItem:avPlayerItem];
         self.avPlayerLooper = playerLooper;
     }
-    
-    NSAssert(videoFileURL != nil, @"Onboarding video missing in bundle");
     
     self.avPlayer = queuePlayer;
     
