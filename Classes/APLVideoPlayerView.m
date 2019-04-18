@@ -45,6 +45,10 @@
 
 -(void)commonInit {
     self.videoGravity = AVLayerVideoGravityResizeAspectFill;
+
+    NSNotificationCenter *defaultCenter = [NSNotificationCenter defaultCenter];
+    [defaultCenter addObserver:self selector:@selector(applicationDidEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+    [defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
     
     AVPlayerLayer *avPlayerLayer = [[AVPlayerLayer alloc] init];
     avPlayerLayer.videoGravity = self.videoGravity;
@@ -55,28 +59,24 @@
     self.avPlayerLayer = avPlayerLayer;
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 -(void)layoutSubviews {
     [super layoutSubviews];
     
     self.avPlayerLayer.frame = self.bounds;
 }
 
--(void)setVideoFilename:(NSString *)videoFilename loop:(Boolean) loop {
-    [self setVideoFilename:videoFilename withExtension:nil loop:loop];
-}
-
--(void)setVideoFilename:(NSString *)videoFilename withExtension:(NSString *) withExtension loop:(Boolean) loop {
+-(void)setVideoFilename:(NSString *)videoFilename withExtension:(NSString *)extension loop:(BOOL)loop {
     if ([_videoFilename isEqualToString:videoFilename]) {
         return;
     }
-    
-    if (withExtension == nil) {
-        withExtension = @"mp4";
-    }
-    
+
     _videoFilename = videoFilename;
     
-    NSURL *videoFileURL = [[NSBundle mainBundle] URLForResource:videoFilename withExtension:withExtension];
+    NSURL *videoFileURL = [[NSBundle mainBundle] URLForResource:videoFilename withExtension:extension];
     
     NSAssert(videoFileURL != nil, @"Onboarding video missing in bundle");
     
@@ -105,6 +105,33 @@
 
 -(void)pause {
     [self.avPlayer pause];
+}
+
+-(void)configureForAmbientPlayback {
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    [audioSession setCategory:AVAudioSessionCategoryAmbient error:nil];
+    [audioSession setActive:YES error:nil];
+    self.avPlayer.allowsExternalPlayback = NO;
+}
+
+#pragma mark - Background Handling
+
+/*
+ * One gotcha with the AVPlayer is that it pauses its ouput
+ * when the app is sent to background. See
+ * https://developer.apple.com/library/archive/qa/qa1668/_index.html
+ * for reference. The recommendation is to remove the the layer's player
+ * on -applicationDidEnterBackground: and to re-assign it
+ * on -applicationDidBecomeActive:. That's what we've already done in
+ * HBMB.
+ */
+
+-(void)applicationDidEnterBackground:(NSNotification *)notification {
+    self.avPlayerLayer.player = nil;
+}
+
+-(void)applicationDidBecomeActive:(NSNotification *)notification {
+    self.avPlayerLayer.player = self.avPlayer;
 }
 
 @end
